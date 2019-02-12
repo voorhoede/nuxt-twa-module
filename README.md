@@ -18,13 +18,13 @@ To upload an app to the Google Play Store you **need a key** for signing. To cre
 After you've created this key you will need to copy the **SHA-256** for the nuxt configuration file by running this code
 
 ```bash 
-  $ keytool -list -v -keystore LOCATION_OF_YOUR_KEY.keystore
+$ keytool -list -v -keystore LOCATION_OF_YOUR_KEY.keystore
 ```
 
 ## Installation 🚀
 
 ```bash    
-  $ npm install nuxt-twa-module --save-dev
+$ npm install nuxt-twa-module --save-dev
 ```
 
 ## Setting up configuration
@@ -56,17 +56,32 @@ The values in `defaultoptions` and module `options` will replace variables in th
 When the configuration is done you can run your project like you are used to.
 
 ```bash
-  $ npm run build/generate
+$ npm run build/generate
 ```
 or 
 ```bash
-  $ nuxt build/generate
+$ nuxt build/generate
 ```
 
 ### Output  
 
 - An **android folder** in your project root, which you can be opened in android studio to [build your app](https://developer.android.com/studio/run/). When you've build and tested your app you can use [Generate Signed Bundle / APK](https://developer.android.com/studio/publish/app-signing). This will generate a .aab file that can be uploaded to the Google Play Store.
 - You Nuxt app with an added `.well-known` folder which is needed to make your domain trusted with the app in the store.
+
+### Debug
+
+To be able to test the android application, you need to tell chrome on your device it can trust your PWA. For this you need to have `android-platform-tools` installed on your machine.
+
+```bash
+brew cask install android-platform-tools
+```
+
+On chrome on your device, go to `chrome://flags` and enable `Enable command line on non-rooted devices`
+
+On your machine, run the following command to whitelist your URL in chrome:
+```bash
+adb shell "echo '_ --disable-digital-asset-link-verification-for-url=\"<your URL>\"' > /data/local/tmp/chrome-command-line"
+```
 
 ---------------------
 ## Licence
