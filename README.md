@@ -36,9 +36,13 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
     modules: [
       ['nuxt-twa-module', {
         /* module options */
-        defaultUrl: 'http://drinks-app.netlify.com', 
-        hostName: 'drinks-app.netlify.com' 
-        sha256Fingerprints: '/* your SHA-256 key */'
+        defaultUrl: 'http://your-url.com', 
+        hostName: 'your-url.com',
+        sha256Fingerprints: '/* your SHA-256 key */',
+        applicationId: 'com.example.example',
+        launcherName: 'Your app name',
+        versionCode: 1,
+        versionName: '1.0'
 
         /* optional */
         /* overwrite default location for icon */
