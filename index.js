@@ -40,6 +40,7 @@ module.exports = function nuxtTwa (options) {
 
     // replace the current /android directory with a fresh copy
     await asyncRimRaf(rootDir + '/android')
+    await asyncMkdirp(rootDir + '/android')
     consola.info("Copying android app to /android")
     copydir.sync(moduleRoot + '/android', rootDir + '/android')
 
