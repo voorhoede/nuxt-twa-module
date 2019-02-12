@@ -28,8 +28,10 @@ module.exports = function nuxtTwa (options) {
 
   this.nuxt.hook('build:before', async () => {
     if (!options.defaultUrl || !options.hostName) {
-      consola.error('Nuxt TWA: You should at least set the hostName & defaultUrl in the config')
-      return;
+      if (!options.defaultUrl) consola.error('Nuxt TWA: defaultUrl is required')
+      if (!options.hostName) consola.error('Nuxt TWA: hostName is required')
+
+      return
     }
 
     options = {
@@ -38,6 +40,7 @@ module.exports = function nuxtTwa (options) {
       ...options
     }
 
+    // replace the current /android directory with a fresh copy
     await asyncRimRaf(options.rootDir + '/android')
     consola.info("Copying android app to /android")
     copydir.sync(moduleRoot + '/android', options.rootDir + '/android')
@@ -58,10 +61,12 @@ module.exports = function nuxtTwa (options) {
 
 async function generateBuildFile(context) {
   try {
+    // get template as string from android template
     const buildFileTemplate = await asyncReadFile(moduleRoot + '/android/app/build.gradle', 'utf8')
     const template = Handlebars.compile(buildFileTemplate)
+    
+    // create build.gradle file with variables
     const buildFile = template(context)
-
     await asyncWriteFile(context.rootDir + '/android/app/build.gradle', buildFile)
 
     consola.success('TWA build.gradle generated')
@@ -83,8 +88,10 @@ async function generateAssetLinksFile(options, path) {
 
     const file = JSON.stringify(config)
 
+    // create ./well-known folder if it doesn't exist yest
     await asyncMkdirp(options.rootDir + path +'/.well-known')
 
+    // create assetlink file in desired path
     asyncWriteFile(options.rootDir + path +'/.well-known/assetlinks.json', file)
   }
 }
@@ -97,6 +104,8 @@ function generateIcons(options) {
     if (err) throw err
 
     if (icon) {
+      // generate icons in desired formats
+      // NOTE: order needs to be from large to small
       icon
         .resize(192, 192).write(androidIconsPath + '/mipmap-xxxhdpi/ic_launcher.png')
         .resize(144, 144).write(androidIconsPath + '/mipmap-xxhdpi/ic_launcher.png')
