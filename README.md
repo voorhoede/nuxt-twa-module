@@ -1,7 +1,7 @@
 # Nuxt TWA module
 
 
-[![npm style guide](https://img.shields.io/npm/v/nuxt-twa-module.svg?style=flat)](https://github.com/voorhoede/nuxt-twa-module)
+[![npm style guide](https://img.shields.io/npm/v/nuxt-twa-module.svg?style=flat)](https://github.com/voorhoede-labs/nuxt-twa-module)
 
 
 This module generates an android app using [trusted web activities](https://developers.google.com/web/updates/2019/02/using-twa). It uses the [SVGOMG example](https://github.com/GoogleChromeLabs/svgomg-twa) as template reference and sets the necessery configuration for running the app, creates icons and generates files used by the application.
