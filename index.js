@@ -16,13 +16,13 @@ const asyncRimRaf = promisify(rimraf)
 
 module.exports = function nuxtTwa (options) {
   const appRoot = this.nuxt.options.rootDir
-  const appInfo = require(appRoot + '/package.json')
+  const pckg = require(appRoot + '/package.json')
 
   const defaultOptions = {
-    applicationId: `com.${appInfo.name}.${appInfo.name}`,
-    launcherName: appInfo.name,
-    versionCode: Number(String(appInfo.version).replace(/\./g, '')),
-    versionName: appInfo.version,
+    applicationId: `com.${pckg.name}.${pckg.name}`,
+    launcherName: pckg.name,
+    versionCode: Number(String(pckg.version).replace(/\./g, '')),
+    versionName: pckg.version,
     iconPath: '/static/icon.png'
   }
 
