@@ -68,7 +68,7 @@ $ nuxt build/generate
 - An **android folder** in your project root, which you can be opened in android studio to [build your app](https://developer.android.com/studio/run/). When you've build and tested your app you can use [Generate Signed Bundle / APK](https://developer.android.com/studio/publish/app-signing). This will generate a .aab file that can be uploaded to the Google Play Store.
 - You Nuxt app with an added `.well-known` folder which is needed to make your domain trusted with the app in the store.
 
-### Debug
+## Debug
 
 To be able to test the android application, you need to tell chrome on your device it can trust your PWA. For this you need to have `android-platform-tools` installed on your machine.
 
