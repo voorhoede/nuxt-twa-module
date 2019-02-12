@@ -1,6 +1,6 @@
 {
   "name": "nuxt-twa-module",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A module for NUXT for converting your PWA into an Android app using 'trusted web activities'",
   "main": "index.js",
   "scripts": {
