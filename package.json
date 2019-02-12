@@ -1,0 +1,19 @@
+{
+  "name": "nuxt-twa-module",
+  "version": "0.0.1",
+  "description": "A module for NUXT for converting your PWA into an Android app using 'trusted web activities'",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voorhoede-labs/nuxt-twa-module.git"
+  },
+  "author": "Sjoerd Beentjes <sjoerd@voorhoede.nl> (https://sjoerdbeentjes)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/voorhoede-labs/nuxt-twa-module/issues"
+  },
+  "homepage": "https://github.com/voorhoede-labs/nuxt-twa-module#readme"
+}
