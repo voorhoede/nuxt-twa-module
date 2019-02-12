@@ -46,7 +46,9 @@ module.exports = function nuxtTwa (options) {
     generateIcons(options)
   })
 
-  this.nuxt.hook('build:done', () => generateAssetLinksFile(options, '/.nuxt/dist/client'))
+  this.nuxt.hook('build:done', () => {
+    generateAssetLinksFile(options, '/.nuxt/dist/client')
+  })
 
   this.nuxt.hook('generate:done', () => {
     generateAssetLinksFile(options, '/dist')
