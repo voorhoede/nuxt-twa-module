@@ -7,7 +7,8 @@ const Handlebars = require('handlebars');
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const consola = require('consola')
-const appInfo = require(rootPath.path + '/package.json')
+const appRoot = rootPath.path
+const appInfo = require(appRoot + '/package.json')
 
 const asyncReadFile = promisify(fs.readFile)
 const asyncWriteFile = promisify(fs.writeFile)
@@ -35,9 +36,9 @@ function nuxtTwa (options) {
         ...options
       }
 
-      await asyncRimRaf(rootPath.path + '/android')
+      await asyncRimRaf(appRoot + '/android')
       consola.info("Copying android app to /android")
-      copydir.sync('./plugins/nuxt-twa/android', rootPath.path + '/android')
+      copydir.sync('./android', appRoot + '/android')
 
       generateBuildFile(options)
       generateIcons(options)
@@ -54,11 +55,11 @@ function nuxtTwa (options) {
 
 async function generateBuildFile(context) {
   try {
-    const buildFileTemplate = await asyncReadFile(rootPath.path + '/plugins/nuxt-twa/android/app/build.gradle', 'utf8')
+    const buildFileTemplate = await asyncReadFile(appRoot + '/plugins/nuxt-twa/android/app/build.gradle', 'utf8')
     const template = Handlebars.compile(buildFileTemplate)
     const buildFile = template(context)
 
-    await asyncWriteFile(rootPath.path + '/android/app/build.gradle', buildFile)
+    await asyncWriteFile(appRoot + '/android/app/build.gradle', buildFile)
 
     consola.success('TWA build.gradle generated')
   } catch (err) {
@@ -79,16 +80,16 @@ async function generateAssetLinksFile(options, path) {
 
     const file = JSON.stringify(config)
 
-    await asyncMkdirp(rootPath.path + path +'/.well-known')
+    await asyncMkdirp(appRoot + path +'/.well-known')
 
-    asyncWriteFile(rootPath.path + path +'/.well-known/assetlinks.json', file)
+    asyncWriteFile(appRoot + path +'/.well-known/assetlinks.json', file)
   }
 }
 
 function generateIcons({ iconPath }) {
-  const androidIconsPath = rootPath.path + '/android/app/src/main/res'
+  const androidIconsPath = appRoot + '/android/app/src/main/res'
 
-  Jimp.read(rootPath.path + iconPath, (err, icon) => {
+  Jimp.read(appRoot + iconPath, (err, icon) => {
     if (err) throw err
 
     if (icon) {
