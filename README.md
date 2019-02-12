@@ -24,7 +24,7 @@ After you've created this key you will need to copy the **SHA-256** for the nuxt
 ## Installation 🚀
 
 ```bash    
-    $ npm install nuxt-twa-module --save-dev
+  $ npm install nuxt-twa-module --save-dev
 ```
 
 ## Setting up configuration
@@ -56,11 +56,11 @@ The values in `defaultoptions` and module `options` will replace variables in th
 When the configuration is done you can run your project like you are used to.
 
 ```bash
-  npm run generate
-
-  or
-
-  nuxt generate
+  $ npm run generate
+```
+or 
+```bash
+  $ nuxt generate
 ```
 
 ### Output  
