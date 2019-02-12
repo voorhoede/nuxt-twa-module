@@ -15,9 +15,8 @@ const asyncMkdirp = promisify(mkdirp)
 const asyncRimRaf = promisify(rimraf)
 
 module.exports = function nuxtTwa (options) {
-  const appRoot = this.nuxt.options.rootDir
-  const pckg = require(appRoot + '/package.json')
-
+  const { rootDir } = this.nuxt.options
+  const pckg = require(rootDir + '/package.json')
   const defaultOptions = {
     applicationId: `com.${pckg.name}.${pckg.name}`,
     launcherName: pckg.name,
@@ -35,39 +34,38 @@ module.exports = function nuxtTwa (options) {
     }
 
     options = {
-      ...this.nuxt.options,
       ...defaultOptions,
-      ...options
+      ...options,
     }
 
     // replace the current /android directory with a fresh copy
-    await asyncRimRaf(options.rootDir + '/android')
+    await asyncRimRaf(rootDir + '/android')
     consola.info("Copying android app to /android")
-    copydir.sync(moduleRoot + '/android', options.rootDir + '/android')
+    copydir.sync(moduleRoot + '/android', rootDir + '/android')
 
-    generateBuildFile(options)
-    generateIcons(options)
+    generateBuildFile(options, rootDir)
+    generateIcons(options, rootDir)
   })
 
   this.nuxt.hook('build:done', () => {
-    generateAssetLinksFile(options, '/.nuxt/dist/client')
+    generateAssetLinksFile(options, rootDir + '/.nuxt/dist/client')
   })
 
   this.nuxt.hook('generate:done', () => {
-    generateAssetLinksFile(options, '/dist')
+    generateAssetLinksFile(options, rootDir + '/dist')
     consola.success('Generated TWA assetlinks')
   })
 }
 
-async function generateBuildFile(context) {
+async function generateBuildFile(options, rootDir) {
   try {
     // get template as string from android template
     const buildFileTemplate = await asyncReadFile(moduleRoot + '/android/app/build.gradle', 'utf8')
     const template = Handlebars.compile(buildFileTemplate)
     
     // create build.gradle file with variables
-    const buildFile = template(context)
-    await asyncWriteFile(context.rootDir + '/android/app/build.gradle', buildFile)
+    const buildFile = template(options)
+    await asyncWriteFile(rootDir + '/android/app/build.gradle', buildFile)
 
     consola.success('TWA build.gradle generated')
   } catch (err) {
@@ -87,18 +85,16 @@ async function generateAssetLinksFile(options, path) {
     }]
 
     const file = JSON.stringify(config)
-
-    // create ./well-known folder if it doesn't exist yest
-    await asyncMkdirp(options.rootDir + path +'/.well-known')
-
+    
     // create assetlink file in desired path
-    asyncWriteFile(options.rootDir + path +'/.well-known/assetlinks.json', file)
+    await asyncMkdirp(path +'/.well-known')
+    asyncWriteFile(path +'/.well-known/assetlinks.json', file)
   }
 }
 
-function generateIcons(options) {
-  const iconPath = options.rootDir + options.iconPath
-  const androidIconsPath = options.rootDir + '/android/app/src/main/res'
+function generateIcons(options, rootDir) {
+  const iconPath = rootDir + options.iconPath
+  const androidIconsPath = rootDir + '/android/app/src/main/res'
 
   Jimp.read(iconPath, (err, icon) => {
     if (err) throw err
