@@ -24,5 +24,13 @@
     "jimp": "^0.6.0",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.3"
-  }
+  },
+  "keywords": [
+    "Nuxt",
+    "TWA",
+    "PWA",
+    "Nuxt-module",
+    "PWAPK",
+    "Nuxt-js"    
+  ]
 }
