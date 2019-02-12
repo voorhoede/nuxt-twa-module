@@ -4,7 +4,7 @@
 [![npm style guide](https://img.shields.io/npm/v/nuxt-twa-module.svg?style=flat)](https://github.com/voorhoede/nuxt-twa-module)
 
 
-This module generates an android app using [trusted web activities](https://developers.google.com/web/updates/2019/02/using-twa). It uses the [SVGOMG example](https://github.com/GoogleChromeLabs/svgomg-twa) as template reference, and sets the necessery configuration for running the app, generates icons and files used by the PWA.
+This module generates an android app using [trusted web activities](https://developers.google.com/web/updates/2019/02/using-twa). It uses the [SVGOMG example](https://github.com/GoogleChromeLabs/svgomg-twa) as template reference and sets the necessery configuration for running the app, creates icons and generates files used by the application.
 
 
 ## Requirements
@@ -51,16 +51,16 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
 
 The values in `defaultoptions` and module `options` will replace variables in the [build.gradle](https://github.com/voorhoede-labs/nuxt-twa-module/blob/master/android/app/build.gradle)
 
-## Generating time 🏗
+## Time to build 🏗
 
 When the configuration is done you can run your project like you are used to.
 
 ```bash
-  $ npm run generate
+  $ npm run build/generate
 ```
 or 
 ```bash
-  $ nuxt generate
+  $ nuxt build/generate
 ```
 
 ### Output  
