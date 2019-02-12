@@ -1,4 +1,3 @@
-const rootPath = require('app-root-path')
 const Jimp = require('jimp');
 const { promisify } = require('util');
 const copydir = require('copy-dir');
@@ -7,7 +6,7 @@ const Handlebars = require('handlebars');
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const consola = require('consola')
-const moduleRoot = rootPath.path
+const moduleRoot = __dirname
 
 const asyncReadFile = promisify(fs.readFile)
 const asyncWriteFile = promisify(fs.writeFile)
@@ -63,7 +62,7 @@ async function generateBuildFile(options, rootDir) {
     // get template as string from android template
     const buildFileTemplate = await asyncReadFile(moduleRoot + '/android/app/build.gradle', 'utf8')
     const template = Handlebars.compile(buildFileTemplate)
-    
+
     // create build.gradle file with variables
     const buildFile = template(options)
     await asyncWriteFile(rootDir + '/android/app/build.gradle', buildFile)
@@ -86,7 +85,7 @@ async function generateAssetLinksFile(options, path) {
     }]
 
     const file = JSON.stringify(config)
-    
+
     // create assetlink file in desired path
     await asyncMkdirp(path +'/.well-known')
     asyncWriteFile(path +'/.well-known/assetlinks.json', file)
