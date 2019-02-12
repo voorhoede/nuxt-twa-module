@@ -1,4 +1,4 @@
-#Nuxt TWA module
+# Nuxt TWA module
 
 
 [![npm style guide](https://img.shields.io/npm/v/nuxt-twa-module.svg?style=flat)](https://github.com/voorhoede/nuxt-twa-module)
