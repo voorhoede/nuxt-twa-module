@@ -73,14 +73,14 @@ $ nuxt build/generate
 To be able to test the android application, you need to tell chrome on your device it can trust your PWA. For this you need to have `android-platform-tools` installed on your machine.
 
 ```bash
-brew cask install android-platform-tools
+$ brew cask install android-platform-tools
 ```
 
 On chrome on your device, go to `chrome://flags` and enable `Enable command line on non-rooted devices`
 
 On your machine, run the following command to whitelist your URL in chrome:
 ```bash
-adb shell "echo '_ --disable-digital-asset-link-verification-for-url=\"<your URL>\"' > /data/local/tmp/chrome-command-line"
+$ adb shell "echo '_ --disable-digital-asset-link-verification-for-url=\"<your URL>\"' > /data/local/tmp/chrome-command-line"
 ```
 
 ---------------------
