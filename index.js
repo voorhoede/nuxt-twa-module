@@ -7,59 +7,60 @@ const Handlebars = require('handlebars');
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const consola = require('consola')
-const appRoot = rootPath.path
-const appInfo = require(appRoot + '/package.json')
+const moduleRoot = rootPath.path
 
 const asyncReadFile = promisify(fs.readFile)
 const asyncWriteFile = promisify(fs.writeFile)
 const asyncMkdirp = promisify(mkdirp)
 const asyncRimRaf = promisify(rimraf)
 
-const defaultOptions = {
-  applicationId: `com.${appInfo.name}.${appInfo.name}`,
-  launcherName: appInfo.name,
-  versionCode: Number(String(appInfo.version).replace(/\./g, '')),
-  versionName: appInfo.version,
-  iconPath: '/static/icon.png'
-}
+module.exports = function nuxtTwa (options) {
+  const appRoot = this.nuxt.options.rootDir
+  const appInfo = require(appRoot + '/package.json')
 
-function nuxtTwa (options) {
-  if (!this.options.debug) {
-    this.nuxt.hook('generate:before', async () => {
-      if (!options.defaultUrl || !options.hostName) {
-        consola.error('Nuxt TWA: You should at least set the hostName & defaultUrl in the config')
-        return;
-      }
-
-      options = {
-        ...defaultOptions,
-        ...options
-      }
-
-      await asyncRimRaf(appRoot + '/android')
-      consola.info("Copying android app to /android")
-      copydir.sync('./android', appRoot + '/android')
-
-      generateBuildFile(options)
-      generateIcons(options)
-    })
-
-    this.nuxt.hook('build:done', () => generateAssetLinksFile(options, '/.nuxt/dist/client'))
-
-    this.nuxt.hook('generate:done', () => {
-      generateAssetLinksFile(options, '/dist')
-      consola.success('Generated TWA assetlinks')
-    })
+  const defaultOptions = {
+    applicationId: `com.${appInfo.name}.${appInfo.name}`,
+    launcherName: appInfo.name,
+    versionCode: Number(String(appInfo.version).replace(/\./g, '')),
+    versionName: appInfo.version,
+    iconPath: '/static/icon.png'
   }
+
+  this.nuxt.hook('build:before', async () => {
+    if (!options.defaultUrl || !options.hostName) {
+      consola.error('Nuxt TWA: You should at least set the hostName & defaultUrl in the config')
+      return;
+    }
+
+    options = {
+      ...this.nuxt.options,
+      ...defaultOptions,
+      ...options
+    }
+
+    await asyncRimRaf(options.rootDir + '/android')
+    consola.info("Copying android app to /android")
+    copydir.sync(moduleRoot + '/android', options.rootDir + '/android')
+
+    generateBuildFile(options)
+    generateIcons(options)
+  })
+
+  this.nuxt.hook('build:done', () => generateAssetLinksFile(options, '/.nuxt/dist/client'))
+
+  this.nuxt.hook('generate:done', () => {
+    generateAssetLinksFile(options, '/dist')
+    consola.success('Generated TWA assetlinks')
+  })
 }
 
 async function generateBuildFile(context) {
   try {
-    const buildFileTemplate = await asyncReadFile(appRoot + '/plugins/nuxt-twa/android/app/build.gradle', 'utf8')
+    const buildFileTemplate = await asyncReadFile(moduleRoot + '/android/app/build.gradle', 'utf8')
     const template = Handlebars.compile(buildFileTemplate)
     const buildFile = template(context)
 
-    await asyncWriteFile(appRoot + '/android/app/build.gradle', buildFile)
+    await asyncWriteFile(context.rootDir + '/android/app/build.gradle', buildFile)
 
     consola.success('TWA build.gradle generated')
   } catch (err) {
@@ -80,16 +81,17 @@ async function generateAssetLinksFile(options, path) {
 
     const file = JSON.stringify(config)
 
-    await asyncMkdirp(appRoot + path +'/.well-known')
+    await asyncMkdirp(options.rootDir + path +'/.well-known')
 
-    asyncWriteFile(appRoot + path +'/.well-known/assetlinks.json', file)
+    asyncWriteFile(options.rootDir + path +'/.well-known/assetlinks.json', file)
   }
 }
 
-function generateIcons({ iconPath }) {
-  const androidIconsPath = appRoot + '/android/app/src/main/res'
+function generateIcons(options) {
+  const iconPath = options.rootDir + options.iconPath
+  const androidIconsPath = options.rootDir + '/android/app/src/main/res'
 
-  Jimp.read(appRoot + iconPath, (err, icon) => {
+  Jimp.read(iconPath, (err, icon) => {
     if (err) throw err
 
     if (icon) {
@@ -105,4 +107,4 @@ function generateIcons({ iconPath }) {
   });
 }
 
-module.exports = nuxtTwa
+module.exports.meta = require('./package.json')
