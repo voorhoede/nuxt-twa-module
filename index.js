@@ -38,8 +38,6 @@ module.exports = function nuxtTwa (options) {
       return
     }
 
-    console.log('test1')
-
     options = {
       ...defaultOptions,
       ...options,
