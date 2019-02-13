@@ -36,7 +36,7 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
     modules: [
       ['nuxt-twa-module', {
         /* module options */
-        defaultUrl: 'http://your-url.com', 
+        defaultUrl: 'https://your-url.com', 
         hostName: 'your-url.com',
         sha256Fingerprints: '/* your SHA-256 key */',
         applicationId: 'com.example.example',
