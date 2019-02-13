@@ -1,21 +1,27 @@
-const Jimp = require('jimp');
-const { promisify } = require('util');
-const copydir = require('copy-dir');
+const Jimp = require('jimp')
+const { promisify } = require('util')
 const fs = require('fs')
-const Handlebars = require('handlebars');
+const Handlebars = require('handlebars')
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const consola = require('consola')
+const ncp = require('ncp');
+const tmp  = require('tmp-promise');
+
 const moduleRoot = __dirname
 
 const asyncReadFile = promisify(fs.readFile)
 const asyncWriteFile = promisify(fs.writeFile)
 const asyncMkdirp = promisify(mkdirp)
 const asyncRimRaf = promisify(rimraf)
+const asyncNcp = promisify(ncp)
+const asyncTmpDir = promisify(tmp.dir)
 
 module.exports = function nuxtTwa (options) {
   const { rootDir } = this.nuxt.options
+
   const pckg = require(rootDir + '/package.json')
+
   const defaultOptions = {
     applicationId: `com.${pckg.name}.${pckg.name}`,
     launcherName: pckg.name,
@@ -32,40 +38,55 @@ module.exports = function nuxtTwa (options) {
       return
     }
 
+    console.log('test1')
+
     options = {
       ...defaultOptions,
       ...options,
     }
 
-    // replace the current /android directory with a fresh copy
-    await asyncRimRaf(rootDir + '/android')
-    await asyncMkdirp(rootDir + '/android')
-    consola.info("Copying android app to /android")
-    copydir.sync(moduleRoot + '/android', rootDir + '/android')
+    try {
+      const tmpRes = await tmp.dir()
+      const tempDir = tmpRes.path + '/android'
+  
+      consola.info("Generating android app files")
+  
+      await asyncNcp(moduleRoot + '/android', tempDir)
+      
+      await generateBuildFile(options, tempDir)
+      generateIcons(options, tempDir, rootDir)
+  
+      await asyncNcp(tempDir, rootDir + '/android')
+      
+      asyncRimRaf(tempDir)
+    } catch (err) {
+      consola.log(err)
 
-    generateBuildFile(options, rootDir)
-    generateIcons(options, rootDir)
+      if (fs.existsSync(tempDir)) {
+        asyncRimRaf(tempDir)
+      }
+    }
   })
 
   this.nuxt.hook('build:done', () => {
     generateAssetLinksFile(options, rootDir + '/.nuxt/dist/client')
+    consola.success('Generated TWA assetlinks')
   })
 
   this.nuxt.hook('generate:done', () => {
     generateAssetLinksFile(options, rootDir + '/dist')
-    consola.success('Generated TWA assetlinks')
   })
 }
 
-async function generateBuildFile(options, rootDir) {
+async function generateBuildFile(options, tempDir) {
   try {
     // get template as string from android template
-    const buildFileTemplate = await asyncReadFile(moduleRoot + '/android/app/build.gradle', 'utf8')
+    const buildFileTemplate = await asyncReadFile(tempDir + '/app/build.gradle', 'utf8')
     const template = Handlebars.compile(buildFileTemplate)
 
     // create build.gradle file with variables
     const buildFile = template(options)
-    await asyncWriteFile(rootDir + '/android/app/build.gradle', buildFile)
+    await asyncWriteFile(tempDir + '/app/build.gradle', buildFile)
 
     consola.success('TWA build.gradle generated')
   } catch (err) {
@@ -81,22 +102,23 @@ async function generateAssetLinksFile(options, path) {
         "namespace": "android_app",
         "package_name": options.applicationId,
         "sha256_cert_fingerprints": options.sha256Fingerprints
-      }
+      },
+      "test": "poep"
     }]
 
     const file = JSON.stringify(config)
 
     // create assetlink file in desired path
     await asyncMkdirp(path +'/.well-known')
-    asyncWriteFile(path +'/.well-known/assetlinks.json', file)
+    await asyncWriteFile(path +'/.well-known/assetlinks.json', file)
   }
 }
 
-function generateIcons(options, rootDir) {
+function generateIcons(options, tempDir, rootDir) {
   const iconPath = rootDir + options.iconPath
-  const androidIconsPath = rootDir + '/android/app/src/main/res'
+  const androidIconsPath = tempDir + '/app/src/main/res'
 
-  Jimp.read(iconPath, (err, icon) => {
+  Jimp.read(iconPath, async (err, icon) => {
     if (err) throw err
 
     if (icon) {
