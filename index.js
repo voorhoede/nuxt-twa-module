@@ -52,7 +52,7 @@ module.exports = function nuxtTwa (options) {
       consola.info("Generating android app files")
   
       await asyncNcp(moduleRoot + '/android', tempDir)
-      
+
       await generateBuildFile(options, tempDir)
       generateIcons(options, tempDir, rootDir)
   
@@ -103,7 +103,6 @@ async function generateAssetLinksFile(options, path) {
         "package_name": options.applicationId,
         "sha256_cert_fingerprints": options.sha256Fingerprints
       },
-      "test": "poep"
     }]
 
     const file = JSON.stringify(config)
