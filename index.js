@@ -15,7 +15,6 @@ const asyncWriteFile = promisify(fs.writeFile)
 const asyncMkdirp = promisify(mkdirp)
 const asyncRimRaf = promisify(rimraf)
 const asyncNcp = promisify(ncp)
-const asyncTmpDir = promisify(tmp.dir)
 
 module.exports = function nuxtTwa (options) {
   const { rootDir } = this.nuxt.options
