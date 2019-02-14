@@ -7,6 +7,7 @@ const rimraf = require('rimraf')
 const consola = require('consola')
 const ncp = require('ncp');
 const tmp  = require('tmp-promise');
+const generateIcons = require('./lib/generate-icons')
 
 const moduleRoot = __dirname
 
@@ -20,7 +21,7 @@ module.exports = function nuxtTwa (options) {
   const { rootDir } = this.nuxt.options
 
   const pckg = require(rootDir + '/package.json')
-
+  
   const defaultOptions = {
     applicationId: `com.${pckg.name}.${pckg.name}`,
     launcherName: pckg.name,
@@ -28,37 +29,40 @@ module.exports = function nuxtTwa (options) {
     versionName: pckg.version,
     iconPath: '/static/icon.png'
   }
-
+  
   this.nuxt.hook('build:before', async () => {
     if (!options.defaultUrl || !options.hostName) {
       if (!options.defaultUrl) consola.error('Nuxt TWA: defaultUrl is required')
       if (!options.hostName) consola.error('Nuxt TWA: hostName is required')
-
+      
       return
     }
-
+    
     options = {
       ...defaultOptions,
       ...options,
     }
-
+    
     try {
       const tmpRes = await tmp.dir()
       const tempDir = tmpRes.path + '/android'
-  
+      
       consola.info("Generating android app files")
-  
+      
       await asyncNcp(moduleRoot + '/android', tempDir)
-
+      
       await generateBuildFile(options, tempDir)
-      generateIcons(options, tempDir, rootDir)
-  
+
+      const iconPath = rootDir + options.iconPath
+      const androidIconsPath = tempDir + '/app/src/main/res'
+      await generateIcons(iconPath, androidIconsPath, rootDir)
+      
       await asyncNcp(tempDir, rootDir + '/android')
       
       asyncRimRaf(tempDir)
     } catch (err) {
       consola.log(err)
-
+      
       if (fs.existsSync(tempDir)) {
         asyncRimRaf(tempDir)
       }
@@ -108,28 +112,6 @@ async function generateAssetLinksFile(options, path) {
     await asyncMkdirp(path +'/.well-known')
     await asyncWriteFile(path +'/.well-known/assetlinks.json', file)
   }
-}
-
-function generateIcons(options, tempDir, rootDir) {
-  const iconPath = rootDir + options.iconPath
-  const androidIconsPath = tempDir + '/app/src/main/res'
-
-  Jimp.read(iconPath, async (err, icon) => {
-    if (err) throw err
-
-    if (icon) {
-      // generate icons in desired formats
-      // NOTE: order needs to be from large to small
-      icon
-        .resize(192, 192).write(androidIconsPath + '/mipmap-xxxhdpi/ic_launcher.png')
-        .resize(144, 144).write(androidIconsPath + '/mipmap-xxhdpi/ic_launcher.png')
-        .resize(96, 96).write(androidIconsPath + '/mipmap-xhdpi/ic_launcher.png')
-        .resize(72, 72).write(androidIconsPath + '/mipmap-hdpi/ic_launcher.png')
-        .resize(48, 48).write(androidIconsPath + '/mipmap-mdpi/ic_launcher.png')
-
-      consola.success('TWA images generated')
-    }
-  });
 }
 
 module.exports.meta = require('./package.json')
