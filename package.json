@@ -40,7 +40,6 @@
   ],
   "devDependencies": {
     "jest": "latest",
-    "nuxt-edge": "latest",
     "rimraf": "^2.6.3"
   }
 }
