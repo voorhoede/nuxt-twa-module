@@ -1,25 +1,31 @@
-const { readFileSync } = require('fs')
-const { Nuxt, Builder, Generator } = require('nuxt-edge')
 const path = require('path')
-const request = require('request-promise-native')
+const rimraf = require('rimraf')
+const fs = require('fs')
 
 const generateIcons = require('../lib/generate-icons')
 const consola = require('consola')
 
 const iconPath = path.resolve(__dirname, 'fixture/static/icon.png')
-const androidIconsPath =  path.resolve(__dirname, '../android/app/src/main/res/');
+const androidIconsPath =  path.resolve(__dirname, 'fixture/res');
 
 describe('Test generate-icons', () => {
     beforeAll(() => {
         // Redirect std and console to consola too
         // Calling this once is sufficient
         consola.wrapAll()
+        fs.mkdirSync(androidIconsPath)
     })
 
     beforeEach(() => {
         // Re-mock consola before each test call to remove
         // calls from before
         consola.mockTypes(() => jest.fn())
+    })
+
+    afterAll( () => {
+        return rimraf(androidIconsPath, (error) => {
+            console.log(error)
+        })
     })
   
     test('Give errors when generating icons without options', async () => {
