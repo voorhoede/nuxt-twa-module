@@ -27,6 +27,10 @@
     "rimraf": "^2.6.3",
     "tmp-promise": "^1.0.5"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverage": true
+  },
   "keywords": [
     "Nuxt",
     "TWA",
@@ -34,5 +38,9 @@
     "Nuxt-module",
     "PWAPK",
     "Nuxt-js"
-  ]
+  ],
+  "devDependencies": {
+    "jest": "latest",
+    "nuxt-edge": "latest"
+  }
 }
