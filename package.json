@@ -4,7 +4,7 @@
   "description": "A module for NUXT for converting your PWA into an Android app using 'trusted web activities'",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest && codecov"
   },
   "repository": {
     "type": "git",
