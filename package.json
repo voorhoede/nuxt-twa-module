@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/voorhoede-labs/nuxt-twa-module#readme",
   "dependencies": {
+    "codecov": "^3.2.0",
     "consola": "^2.4.1",
     "copy-dir": "^0.4.0",
     "handlebars": "^4.1.0",
@@ -28,6 +29,7 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "coverageDirectory": "./coverage/",
     "collectCoverage": true
   },
   "keywords": [
