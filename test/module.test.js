@@ -6,6 +6,7 @@ const rimraf = require('rimraf')
 const prepareAppFolder = require('./helpers/index.js')
 const generateIcons = require('../lib/generate-icons')
 const generateBuildFile = require('../lib/generate-build-file')
+const { generateAssetLinksFile, generateConfig } = require('../lib/generate-asset-links-file')
 
 describe('Test TWA module', () => {
     const iconPath = path.resolve(__dirname, 'fixture/static/icon.png')
@@ -93,7 +94,47 @@ describe('Test TWA module', () => {
             const consolaMessages = consola.success.mock.calls.map(c => c[0])
             expect(consolaMessages).toContain('TWA build.gradle generated')
         })
-    }) 
+    })
+    
+    describe('Test generate-asset-links-file', () => {
+        const options = {
+            applicationId: "test",
+            sha256Fingerprints: "123"
+        }
+
+        const mockdata = [{
+            "relation": ["delegate_permission/common.handle_all_urls"],
+            "target": {
+                "namespace": "android_app",
+                "package_name": "test",
+                "sha256_cert_fingerprints": "123"
+            },
+        }]
+
+        test('GenerateAssetLinksFile: test without options', () => {
+            generateAssetLinksFile({}, '')
+            const consolaMessages = consola.error.mock.calls.map(c => c[0])
+            expect(consolaMessages).toContain('GenerateAssetLinks: Missing SHA256 key to generate .well-known')
+        })
+
+        test('GenerateAssetLinksFile: test without path', () => {
+            generateAssetLinksFile(options, '')
+            const consolaMessages = consola.error.mock.calls.map(c => c[0])
+            expect(consolaMessages).toContain('GenerateAssetLinks: No destination path defined')
+        })
+
+        test('GenerateAssetLinksFile: test generated config', async () => {
+            await generateAssetLinksFile(options, testFolder)
+            const consolaMessages = consola.success.mock.calls.map(c => c[0])
+            expect(consolaMessages[0]).toMatch(/GenerateAssetLinks: created/)
+        })
+
+        test('GenerateAssetLinksFile: test generated config', () => {
+            const generatedConfig = generateConfig(options)
+            expect(generatedConfig).toEqual(mockdata)
+        })
+        
+    })
 })
  
 
