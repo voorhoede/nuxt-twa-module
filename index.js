@@ -1,17 +1,15 @@
 const { promisify } = require('util')
 const fs = require('fs')
-const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const consola = require('consola')
 const ncp = require('ncp')
 const tmp  = require('tmp-promise')
+
 const generateIcons = require('./lib/generate-icons')
 const generateBuildFile = require('./lib/generate-build-file')
-
+const generateAssetLinksFile = require('./lib/generate-asset-links-file')
 const moduleRoot = __dirname
 
-const asyncWriteFile = promisify(fs.writeFile)
-const asyncMkdirp = promisify(mkdirp)
 const asyncRimRaf = promisify(rimraf)
 const asyncNcp = promisify(ncp)
 
@@ -75,25 +73,6 @@ module.exports = function nuxtTwa (options) {
   this.nuxt.hook('generate:done', () => {
     generateAssetLinksFile(options, rootDir + '/dist')
   })
-}
-
-async function generateAssetLinksFile(options, path) {
-  if (options.sha256Fingerprints) {
-    const config = [{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": options.applicationId,
-        "sha256_cert_fingerprints": options.sha256Fingerprints
-      },
-    }]
-
-    const file = JSON.stringify(config)
-
-    // create assetlink file in desired path
-    await asyncMkdirp(path +'/.well-known')
-    await asyncWriteFile(path +'/.well-known/assetlinks.json', file)
-  }
 }
 
 module.exports.meta = require('./package.json')
