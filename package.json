@@ -34,6 +34,10 @@
     "testEnvironment": "node",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "lib/*js", 
+      "!test/helpers/*js"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/test/helpers/"
