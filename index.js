@@ -8,6 +8,7 @@ const consola = require('consola')
 const ncp = require('ncp');
 const tmp  = require('tmp-promise');
 const generateIcons = require('./lib/generate-icons')
+const generateBuildFile = require('./lib/generate-build-file')
 
 const moduleRoot = __dirname
 
@@ -77,22 +78,6 @@ module.exports = function nuxtTwa (options) {
   this.nuxt.hook('generate:done', () => {
     generateAssetLinksFile(options, rootDir + '/dist')
   })
-}
-
-async function generateBuildFile(options, tempDir) {
-  try {
-    // get template as string from android template
-    const buildFileTemplate = await asyncReadFile(tempDir + '/app/build.gradle', 'utf8')
-    const template = Handlebars.compile(buildFileTemplate)
-
-    // create build.gradle file with variables
-    const buildFile = template(options)
-    await asyncWriteFile(tempDir + '/app/build.gradle', buildFile)
-
-    consola.success('TWA build.gradle generated')
-  } catch (err) {
-    consola.error(err)
-  }
 }
 
 async function generateAssetLinksFile(options, path) {
