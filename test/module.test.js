@@ -88,7 +88,6 @@ describe('Test TWA module', () => {
             expect(consolaMessages).toContain('GenerateBuildFile: Options object is empty')
         })
 
-
         test('GenerateBuildFile: successfully create gradle file', async () => {
             await generateBuildFile(buildOptions, gradleFile)
             const consolaMessages = consola.success.mock.calls.map(c => c[0])
