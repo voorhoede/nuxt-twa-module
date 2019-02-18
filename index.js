@@ -4,14 +4,14 @@ const rimraf = require('rimraf')
 const consola = require('consola')
 const ncp = require('ncp')
 const tmp  = require('tmp-promise')
+const asyncRimRaf = promisify(rimraf)
+const asyncNcp = promisify(ncp)
 
 const generateIcons = require('./lib/generate-icons')
 const generateBuildFile = require('./lib/generate-build-file')
 const generateAssetLinksFile = require('./lib/generate-asset-links-file')
-const moduleRoot = __dirname
 
-const asyncRimRaf = promisify(rimraf)
-const asyncNcp = promisify(ncp)
+const moduleRoot = __dirname
 
 module.exports = function nuxtTwa (options) {
   const { rootDir } = this.nuxt.options
@@ -67,7 +67,6 @@ module.exports = function nuxtTwa (options) {
 
   this.nuxt.hook('build:done', () => {
     generateAssetLinksFile(options, rootDir + '/.nuxt/dist/client')
-    consola.success('Generated TWA assetlinks')
   })
 
   this.nuxt.hook('generate:done', () => {
