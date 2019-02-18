@@ -1,18 +1,15 @@
-const Jimp = require('jimp')
 const { promisify } = require('util')
 const fs = require('fs')
-const Handlebars = require('handlebars')
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 const consola = require('consola')
-const ncp = require('ncp');
-const tmp  = require('tmp-promise');
+const ncp = require('ncp')
+const tmp  = require('tmp-promise')
 const generateIcons = require('./lib/generate-icons')
 const generateBuildFile = require('./lib/generate-build-file')
 
 const moduleRoot = __dirname
 
-const asyncReadFile = promisify(fs.readFile)
 const asyncWriteFile = promisify(fs.writeFile)
 const asyncMkdirp = promisify(mkdirp)
 const asyncRimRaf = promisify(rimraf)

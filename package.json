@@ -31,7 +31,10 @@
     "testEnvironment": "node",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true,
-    "testPathIgnorePatterns": ["/node_modules/","/test/helpers/"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/test/helpers/"
+    ]
   },
   "keywords": [
     "Nuxt",
