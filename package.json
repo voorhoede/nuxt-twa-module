@@ -30,7 +30,8 @@
   "jest": {
     "testEnvironment": "node",
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "testPathIgnorePatterns": ["/node_modules/","/test/helpers/"]
   },
   "keywords": [
     "Nuxt",
