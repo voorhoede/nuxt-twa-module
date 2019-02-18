@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const consola = require('consola')
+const rimraf = require('rimraf')
 
 /** prepare the app folder for the generate build file tests */
 module.exports = function prepareAppFolder (directory) {
