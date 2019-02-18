@@ -2,7 +2,9 @@
 
 [![npm style guide](https://img.shields.io/npm/v/nuxt-twa-module.svg?style=flat)](https://github.com/voorhoede-labs/nuxt-twa-module) [![Nuxt TWA module](https://img.shields.io/codecov/c/github/voorhoede/nuxt-twa-module.svg?style=flat)](https://codecov.io/gh/voorhoede/nuxt-twa-module) [![Nuxt TWA module](https://img.shields.io/circleci/project/github/voorhoede/nuxt-twa-module/master.svg?style=flat)](https://circleci.com/gh/voorhoede/nuxt-twa-module)
 
-This module generates an android app using [Trusted Web Activities](https://developers.google.com/web/updates/2019/02/using-twa). It uses the [SVGOMG example](https://github.com/GoogleChromeLabs/svgomg-twa) as template reference and sets the necessery configuration for running the app, creates icons and generates files used by the application.
+**Nuxt module to transform your PWA into an Android app, using Trusted Web Activities (TWA)**
+
+[Trusted Web Activities](https://developers.google.com/web/updates/2019/02/using-twa) (TWA) allow you to package a Progressive Web App (PWA) in an Android App. You can upload this app to the Google Play Store. This module sets the necessery configuration for running the app, creates icons and generates files used by the application.
 
 ## Requirements
 
@@ -17,20 +19,22 @@ To upload an app to the Google Play Store you **need a key** for signing. To cre
 After you've created this key you will need to copy the **SHA-256** for the nuxt configuration file by running this command:
 
 ```bash
-$ keytool -list -v -keystore LOCATION_OF_YOUR_KEY.keystore
+keytool -list -v -keystore LOCATION_OF_YOUR_KEY.keystore
 ```
+
+You will need Android Studio to create the signed app.
 
 ## Installation 🚀
 
 ```bash
-$ npm install nuxt-twa-module --save-dev
+npm install nuxt-twa-module --save-dev
 ```
 
 ## Setting up configuration
 
 Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
 
-```bash
+```js
   {
     modules: [
       ['nuxt-twa-module', {
@@ -47,50 +51,53 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
         /* overwrite default location for icon */
         iconPath: '/static/icon.png'
       }],
-
     ]
   }
 ```
-
-The values in `defaultOptions` and module `options` will replace variables in the [build.gradle](https://github.com/voorhoede-labs/nuxt-twa-module/blob/master/android/app/build.gradle)
 
 ## Time to build 🏗
 
 When the configuration is done you can run your project like you are used to.
 
 ```bash
-$ npm run build/generate
+npm run build
 ```
 
 or
 
 ```bash
-$ nuxt build/generate
+npm run generate
 ```
 
 ### Output
 
-- An `android` folder in your project root, which you can be opened in android studio to [build your app](https://developer.android.com/studio/run/). When you've build and tested your app you can use [Generate Signed Bundle/APK](https://developer.android.com/studio/publish/app-signing). This will generate a .aab file that can be uploaded to the Google Play Store.
+- An `android` folder in your project root, which you can open in Android Studio to [build your app](https://developer.android.com/studio/run/). When you've build and tested your app you can use [Generate Signed Bundle/APK](https://developer.android.com/studio/publish/app-signing). This will generate a .aab file that can be uploaded to the Google Play Store.
 - You Nuxt app with an added `.well-known` folder which is needed to make your domain trusted with the app in the store.
 
 ## Debug
 
-To be able to test the android application, you need to tell chrome on your device it can trust your PWA. For this you need to have `android-platform-tools` installed on your machine.
+To be able to test the Android application, you need to tell Chrome on your device it can trust your PWA. For this you need to have `android-platform-tools` installed on your machine.
 
 ```bash
-$ brew cask install android-platform-tools
+brew cask install android-platform-tools
 ```
 
 In Chrome on your device, go to `chrome://flags` and enable `Enable command line on non-rooted devices`
 
-On your machine, run the following command to whitelist your URL in chrome:
+On your machine, run the following command to whitelist your URL in Chrome:
 
 ```bash
-$ adb shell "echo '_ --disable-digital-asset-link-verification-for-url=\"<your URL>\"' > /data/local/tmp/chrome-command-line"
+adb shell "echo '_ --disable-digital-asset-link-verification-for-url=\"<your URL>\"' > /data/local/tmp/chrome-command-line"
 ```
+
+## Links
+
+- [Trusted Web Activities](https://developers.google.com/web/updates/2019/02/using-twa)
+- [SVGOMG example](https://github.com/GoogleChromeLabs/svgomg-twa) used as template in this module.
+- [Drinks app in the Google Play Store](https://play.google.com/store/apps/details?id=com.voorhoede.drinks)
 
 ---
 
 ## Licence
 
-[MIT](http://opensource.org/licenses/MIT)
+[MIT](LICENSE)
