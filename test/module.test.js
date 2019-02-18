@@ -7,6 +7,7 @@ const prepareAppFolder = require('./helpers/index.js')
 const generateIcons = require('../lib/generate-icons')
 const generateBuildFile = require('../lib/generate-build-file')
 const { generateAssetLinksFile, generateConfig } = require('../lib/generate-asset-links-file')
+const nuxtTwa = require('../index.js')
 
 describe('Test TWA module', () => {
     const iconPath = path.resolve(__dirname, 'fixture/static/icon.png')
@@ -133,7 +134,12 @@ describe('Test TWA module', () => {
             const generatedConfig = generateConfig(options)
             expect(generatedConfig).toEqual(mockdata)
         })
-        
+    })
+
+    describe('Test generate-asset-links-file', () => {
+        test.skip('NuxtTWA: module script test', () => {
+            nuxtTwa()
+        })
     })
 })
  
