@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.2.0](https://github.com/voorhoede-labs/nuxt-twa-module/compare/v1.1.0...v1.2.0) (2019-02-19)
+
+
+### Features
+
+* **test:** add distfolder for generated android folder to options ([8db8c16](https://github.com/voorhoede-labs/nuxt-twa-module/commit/8db8c16))
+
+
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
 # [1.1.0](https://github.com/voorhoede-labs/nuxt-twa-module/compare/v0.0.11...v1.1.0) (2019-02-19)
 
 
