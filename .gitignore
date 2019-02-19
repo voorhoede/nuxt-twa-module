@@ -1,3 +1,5 @@
 node_modules
 coverage/
 test/test-env/
+.nuxt/
+android/

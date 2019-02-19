@@ -79,21 +79,34 @@ describe('Test TWA module', () => {
         const gradleFile = path.resolve(__dirname, 'test-env/app/build.gradle')
 
         test('GenerateBuildFile: run with unknown gradlefile', async () => {
-            await generateBuildFile(buildOptions, '')
-            const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain('GenerateBuildFile: gradle file not found, does android folder exists?')
+            expect.assertions(1);
+            try {
+                await generateBuildFile(buildOptions, '')
+            } catch (error) {
+                expect(error)
+                    .toMatch(/gradle file not found/)
+            }
         })
 
         test('GenerateBuildFile: run without options', async () => {
-            await generateBuildFile({}, gradleFile)
-            const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain('GenerateBuildFile: Options object is empty')
+            expect.assertions(1);
+            try {
+                await generateBuildFile({}, gradleFile)
+            } catch (error) {
+                expect(error)
+                    .toMatch(/Options object is empty/)
+            }
         })
 
         test('GenerateBuildFile: successfully create gradle file', async () => {
-            await generateBuildFile(buildOptions, gradleFile)
-            const consolaMessages = consola.success.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain('TWA build.gradle generated')
+            expect.assertions(1);
+            let value = ''
+            try {
+                value = await generateBuildFile(buildOptions, gradleFile)
+            } finally {
+                expect(value)
+                    .toBe(true)
+            }
         })
     })
     
@@ -112,10 +125,10 @@ describe('Test TWA module', () => {
             },
         }]
 
-        test('GenerateAssetLinksFile: test without options', () => {
+        test('GenerateAssetLinksFile: test without options', async () => {
             generateAssetLinksFile({}, '')
             const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain('GenerateAssetLinks: Missing SHA256 key to generate .well-known')
+            expect(consolaMessages[0]).toMatch(/Missing SHA256/)
         })
 
         test('GenerateAssetLinksFile: test without path', () => {
@@ -133,12 +146,6 @@ describe('Test TWA module', () => {
         test('GenerateAssetLinksFile: test generated config', () => {
             const generatedConfig = generateConfig(options)
             expect(generatedConfig).toEqual(mockdata)
-        })
-    })
-
-    describe('Test generate-asset-links-file', () => {
-        test.skip('NuxtTWA: module script test', () => {
-            nuxtTwa()
         })
     })
 })

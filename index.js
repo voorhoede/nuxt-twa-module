@@ -9,15 +9,13 @@ const asyncNcp = promisify(ncp)
 
 const generateIcons = require('./lib/generate-icons')
 const generateBuildFile = require('./lib/generate-build-file')
-const generateAssetLinksFile = require('./lib/generate-asset-links-file')
+const { generateAssetLinksFile } = require('./lib/generate-asset-links-file')
 
 const moduleRoot = __dirname
 
 module.exports = function nuxtTwa (options) {
   const { rootDir } = this.nuxt.options
-
   const pckg = require(rootDir + '/package.json')
-  
   const defaultOptions = {
     applicationId: `com.${pckg.name}.${pckg.name}`,
     launcherName: pckg.name,
@@ -38,30 +36,43 @@ module.exports = function nuxtTwa (options) {
       ...defaultOptions,
       ...options,
     }
+
+    let tempDir
+    let tmpRes
     
     try {
-      const tmpRes = await tmp.dir()
-      const tempDir = tmpRes.path + '/android'
-      
-      consola.info("Generating android app files")
-      
-      await asyncNcp(moduleRoot + '/android', tempDir)
-      
-      await generateBuildFile(options, tempDir)
+      tmpRes = await tmp.dir()
+      tempDir = tmpRes.path + '/android'
+    } catch (err) {
+      return consola.error('Temperary directory generation failed:', err)
+    }
 
+    try {
+      await asyncNcp(moduleRoot + '/android', tempDir)
+    } catch (err) {
+      return consola.error('Temporary directory copy failed', err)
+    }
+
+    try {
+      await generateBuildFile(options, tempDir + '/app/build.gradle')
+      consola.success('TWA build.gradle generated')
+    } catch (err) {
+      return consola.error('Generating build file failed', err)
+    }
+
+    try {
       const iconPath = rootDir + options.iconPath
       const androidIconsPath = tempDir + '/app/src/main/res'
       await generateIcons(iconPath, androidIconsPath, rootDir)
-      
+    } catch (err) {
+      return consola.error('Generating icons failed', err)
+    }  
+
+    try {
       await asyncNcp(tempDir, rootDir + '/android')
-      
       asyncRimRaf(tempDir)
     } catch (err) {
-      consola.log(err)
-      
-      if (fs.existsSync(tempDir)) {
-        asyncRimRaf(tempDir)
-      }
+      return consola.log('Copy temporary directory to root failed', err)
     }
   })
 
