@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest && codecov",
-    "dev": "nuxt test/example",
-    "release": "yarn test && standard-version && git push --follow-tags && npm publish"
+    "dev": "nuxt test/example"
   },
   "repository": {
     "type": "git",
