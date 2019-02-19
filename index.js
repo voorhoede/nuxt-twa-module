@@ -65,7 +65,7 @@ module.exports = function nuxtTwa (options) {
     }  
 
     try {
-      await asyncNcp(tempDir, androidFolder)
+      await asyncNcp(tempDir, options.androidFolder)
       asyncRimRaf(tempDir)
     } catch (err) {
       return consola.log('Copy temporary directory to root failed', err)
