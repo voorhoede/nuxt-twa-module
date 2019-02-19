@@ -1,10 +1,11 @@
 {
   "name": "nuxt-twa-module",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "A module for NUXT for converting your PWA into an Android app using 'trusted web activities'",
   "main": "index.js",
   "scripts": {
-    "test": "jest && codecov"
+    "test": "jest && codecov",
+    "dev": "nuxt test/example"
   },
   "repository": {
     "type": "git",
@@ -16,16 +17,24 @@
     "url": "https://github.com/voorhoede-labs/nuxt-twa-module/issues"
   },
   "homepage": "https://github.com/voorhoede-labs/nuxt-twa-module#readme",
-  "dependencies": {
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/preset-env": "^7.3.1",
     "codecov": "^3.2.0",
     "consola": "^2.4.1",
+    "eslint": "^5.14.1",
+    "get-port": "^4.1.0",
     "handlebars": "^4.1.0",
+    "jest": "^24.1.0",
     "jimp": "^0.6.0",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "tmp-promise": "^1.0.5",
-    "jest": "latest",
-    "rimraf": "^2.6.3"
+    "nuxt-edge": "^2.5.0-25842247.c8e17a77",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "rimraf": "^2.6.3",
+    "standard-version": "^5.0.0",
+    "tmp-promise": "^1.0.5"
   },
   "jest": {
     "testEnvironment": "node",
@@ -33,6 +42,7 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "lib/*js",
+      "test/module.test.js",
       "index.js",
       "!test/helpers/*js"
     ],
