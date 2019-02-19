@@ -22,7 +22,8 @@ module.exports = function nuxtTwa (options) {
     versionCode: Number(String(pckg.version).replace(/\./g, '')),
     versionName: pckg.version,
     iconPath: '/static/icon.png',
-    distFolder: rootDir + '.nuxt/dist/client'
+    distFolder: rootDir + '.nuxt/dist/client',
+    androidFolder: rootDir + '/android'
   }
   
   this.nuxt.hook('build:before', async () => {
@@ -64,7 +65,7 @@ module.exports = function nuxtTwa (options) {
     }  
 
     try {
-      await asyncNcp(tempDir, rootDir + '/android')
+      await asyncNcp(tempDir, androidFolder)
       asyncRimRaf(tempDir)
     } catch (err) {
       return consola.log('Copy temporary directory to root failed', err)

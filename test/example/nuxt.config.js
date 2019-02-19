@@ -13,7 +13,8 @@ module.exports = {
       defaultUrl: 'https://test.com',
       sha256Fingerprints: '123',
       iconPath: '/test/fixture/static/icon.png',
-      distFolder: '/test/example/.nuxt/dist/client'
+      distFolder: '/test/example/.nuxt/dist/client',
+      androidFolder: '/test/test-env/app/'
     } }
   ]
 }
