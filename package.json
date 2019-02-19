@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest && codecov",
+    "predev": "rimraf test/example/android && mkdir test/example/android",
     "dev": "nuxt test/example"
   },
   "repository": {

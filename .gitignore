@@ -1,6 +1,7 @@
 node_modules
 coverage/
+
+# Test output
+test/example/.nuxt
 test/test-env/
-.nuxt/
-android/
-example/.nuxt
+test/example/android/

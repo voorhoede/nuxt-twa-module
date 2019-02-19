@@ -14,7 +14,7 @@ module.exports = {
       sha256Fingerprints: '123',
       iconPath: '/test/fixture/static/icon.png',
       distFolder: '/test/example/.nuxt/dist/client',
-      androidFolder: '/test/test-env/app/'
+      androidFolder: './test/example/android/'
     } }
   ]
 }
