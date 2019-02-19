@@ -3,3 +3,4 @@ coverage/
 test/test-env/
 .nuxt/
 android/
+example/.nuxt

@@ -28,6 +28,4 @@ describe('basic', () => {
     const html = await get('/')
     expect(html).toContain('Works!')
   })
-
-  test('')
 })

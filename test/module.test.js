@@ -7,7 +7,6 @@ const prepareAppFolder = require('./helpers/index.js')
 const generateIcons = require('../lib/generate-icons')
 const generateBuildFile = require('../lib/generate-build-file')
 const { generateAssetLinksFile, generateConfig } = require('../lib/generate-asset-links-file')
-const nuxtTwa = require('../index.js')
 
 describe('Test TWA module', () => {
     const iconPath = path.resolve(__dirname, 'fixture/static/icon.png')
@@ -34,72 +33,120 @@ describe('Test TWA module', () => {
     })
 
     describe('Test generate-icons', () => {
-        const iconFolder =  path.resolve(testFolder, 'res/')
+        const destination =  path.resolve(testFolder, 'res/')
 
         beforeAll( () => {
-            fs.mkdirSync(iconFolder, { recursive: true })
+            fs.mkdirSync(destination, { recursive: true })
         })
 
-        test('Give errors when generating icons without options', async () => {
-            generateIcons();
-            const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain('Nuxt TWA: iconPath and androidIconsPath are required')
+        test('Get error when no icon is defined', async () => {
+            expect.assertions(1)
+            try {
+                await generateIcons('', destination)
+            } catch (error) {
+                expect(error)
+                    .toMatch(/No iconPath defined/)
+            }
         })
 
-        test('Give error on invalid Android folder', async () => {
-            await generateIcons(iconPath, 'other/path')
-            const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain("Nuxt TWA: Android icons path invalid")
+        test('Get error when run with non-existing directory', async () => {
+            expect.assertions(1)
+            try {
+                await generateIcons(iconPath, 'other/path')
+            } catch (error) {
+                expect(error)
+                    .toMatch(/Invalid or non-existing/)
+            }
         })
 
-        test('Give error on invalid iconPath', async () => {
-            await generateIcons('path/to/invalid/icon', iconFolder)
-            const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain("Nuxt TWA: iconPath: no such file or directory")
+        test('Get error when run with invalid icon file', async () => {
+            expect.assertions(1)
+            try {
+                await generateIcons('path/to/invalid/icon', destination)
+            } catch (error) {
+                expect(error)
+                    .toMatch(/Invalid iconPath/)
+            }
         })
 
-        test('Give success message when icons are generated', async () => {
-            await generateIcons(iconPath, iconFolder)
-            const consolaMessages = consola.success.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain("Nuxt TWA: app icons generated")
+        test('Try to generate icons', async () => {
+            expect.assertions(1)
+            let value = ''
+            try {
+                value = await generateIcons(iconPath, destination)
+            } finally {
+                expect(value)
+                    .toBe(true)
+            }
         })
     })
 
     describe('Test generate-build-file', () => {
         const appDirectory =  path.resolve(__dirname, 'test-env/app')
+        const gradleFile = path.resolve(__dirname, 'test-env/app/build.gradle')
         const buildOptions = {
-            testString: 'Hello World'
+            defaultUrl: 'test',
+            hostName: 'test123',
+            sha256Fingerprints: '123',
+            iconPath: 'fixture/static/icon.png'
+        }
+
+        const missingDefaultUrl = {
+            hostName: 'test123',
+        }
+
+        const missingHostname = {
+            defaultUrl: 'test123',
         }
 
         // Create app folder and a fresh copy of build.gradle
         beforeAll(() => {
             prepareAppFolder(appDirectory)
         })
+        
 
-        const gradleFile = path.resolve(__dirname, 'test-env/app/build.gradle')
-
-        test('GenerateBuildFile: run with unknown gradlefile', async () => {
-            expect.assertions(1);
+        test('Get error when gradle file is undefined', async () => {
+            expect.assertions(1)
             try {
                 await generateBuildFile(buildOptions, '')
             } catch (error) {
                 expect(error)
-                    .toMatch(/gradle file not found/)
+                    .toMatch(/Gradle file not found/)
             }
         })
 
-        test('GenerateBuildFile: run without options', async () => {
-            expect.assertions(1);
+        test('Get error when options are empty', async () => {
+            expect.assertions(1)
             try {
                 await generateBuildFile({}, gradleFile)
             } catch (error) {
                 expect(error)
-                    .toMatch(/Options object is empty/)
+                    .toMatch(/Module options are empty/)
             }
         })
 
-        test('GenerateBuildFile: successfully create gradle file', async () => {
-            expect.assertions(1);
+        test('Get error when options are empty', async () => {
+            expect.assertions(1)
+            try {
+                await generateBuildFile(missingDefaultUrl, gradleFile)
+            } catch (error) {
+                expect(error)
+                    .toMatch(/options.defaultUrl is missing/)
+            }
+        })
+
+        test('Get error when options are empty', async () => {
+            expect.assertions(1)
+            try {
+                await generateBuildFile(missingHostname, gradleFile)
+            } catch (error) {
+                expect(error)
+                    .toMatch(/options.hostName is missing/)
+            }
+        })
+
+        test('Try to generate build file', async () => {
+            expect.assertions(1)
             let value = ''
             try {
                 value = await generateBuildFile(buildOptions, gradleFile)
@@ -125,25 +172,38 @@ describe('Test TWA module', () => {
             },
         }]
 
-        test('GenerateAssetLinksFile: test without options', async () => {
-            generateAssetLinksFile({}, '')
-            const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages[0]).toMatch(/Missing SHA256/)
+        test('Get error when no options are passed', async () => {
+            expect.assertions(1)
+            try {
+                await generateAssetLinksFile({}, '')
+            } catch (error) {
+                expect(error)
+                .toMatch(/Missing SHA256/)
+            }
         })
 
-        test('GenerateAssetLinksFile: test without path', () => {
-            generateAssetLinksFile(options, '')
-            const consolaMessages = consola.error.mock.calls.map(c => c[0])
-            expect(consolaMessages).toContain('GenerateAssetLinks: No destination path defined')
+        test('Get error when destination path is invalid', async() => {
+            expect.assertions(1)
+            try {
+                await generateAssetLinksFile(options, '')
+            } catch (error) {
+                expect(error)
+                .toMatch(/No destination path/)
+            }
         })
 
-        test('GenerateAssetLinksFile: test generated config', async () => {
-            await generateAssetLinksFile(options, testFolder)
-            const consolaMessages = consola.success.mock.calls.map(c => c[0])
-            expect(consolaMessages[0]).toMatch(/GenerateAssetLinks: created/)
+        test('Try to generated config', async () => {
+            expect.assertions(1)
+            let value = ''
+            try {
+                value = await generateAssetLinksFile(options, testFolder)
+            } finally {
+                expect(value)
+                    .toBe(true)
+            }
         })
 
-        test('GenerateAssetLinksFile: test generated config', () => {
+        test('Test generated config', () => {
             const generatedConfig = generateConfig(options)
             expect(generatedConfig).toEqual(mockdata)
         })
