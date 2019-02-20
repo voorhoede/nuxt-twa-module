@@ -23,7 +23,8 @@ module.exports = function nuxtTwa (options) {
     versionName: pckg.version,
     iconPath: '/static/icon.png',
     distFolder: rootDir + '.nuxt/dist/client',
-    androidFolder: rootDir + '/android'
+    androidFolder: rootDir + '/android',
+    statusBarColor: options.statusBarColor || '#fff'
   }
   
   this.nuxt.hook('build:before', async () => {
