@@ -45,7 +45,8 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
         applicationId: 'com.example.example',
         launcherName: 'Your app name',
         versionCode: 1,
-        versionName: '1.0'
+        versionName: '1.0',
+        statusBarColor: /* color */,
 
         /* optional */
         /* overwrite default location for icon */
