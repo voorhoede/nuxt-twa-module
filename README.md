@@ -41,7 +41,7 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
         /* module options */
         defaultUrl: 'https://your-url.com',
         hostName: 'your-url.com',
-        sha256Fingerprints: [/* your SHA-256 keys */],
+        sha256Fingerprints: ['/* your SHA-256 keys */'],
         applicationId: 'com.example.example',
         launcherName: 'Your app name',
         versionCode: 1,
@@ -57,6 +57,8 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
     ]
   }
 ```
+
+the `sha256Fingerprints` by is an array with one SHA-256 key string. But if you have multiple you can add them to the array. More information about the website asociation: https://developer.android.com/training/app-links/verify-site-associations#web-assoc
 
 ## Time to build 🏗
 
@@ -75,7 +77,7 @@ npm run generate
 ### Output
 
 - An `android` folder in your project root, which you can open in Android Studio to [build your app](https://developer.android.com/studio/run/). When you've build and tested your app you can use [Generate Signed Bundle/APK](https://developer.android.com/studio/publish/app-signing). This will generate a .aab file that can be uploaded to the Google Play Store.
-- You Nuxt app with an added `.well-known` folder which is needed to make your domain trusted with the app in the store.
+- Your Nuxt app with an added `.well-known` folder which is needed to make your domain trusted with the app in the store.
 
 ## Debug
 
