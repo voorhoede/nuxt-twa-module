@@ -51,6 +51,8 @@ Add `nuxt-twa-module` to `modules` section of `nuxt.config.js`.
         /* optional */
         /* overwrite default location for icon */
         iconPath: '/static/icon.png'
+        /* Overwrite folder where to put .wellknown */
+        distFolder: '.nuxt/dist/client',
       }],
     ]
   }
