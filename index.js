@@ -3,7 +3,7 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 const consola = require('consola')
 const ncp = require('ncp')
-const tmp  = require('tmp-promise')
+const tmp = require('tmp-promise')
 const asyncRimRaf = promisify(rimraf)
 const asyncNcp = promisify(ncp)
 
@@ -13,7 +13,7 @@ const { generateAssetLinksFile } = require('./lib/generate-asset-links-file')
 
 const moduleRoot = __dirname
 
-module.exports = function nuxtTwa (options) {
+module.exports = function nuxtTwa(options) {
   const { rootDir } = this.nuxt.options
   const pckg = require(rootDir + '/package.json')
   const defaultOptions = {
@@ -22,13 +22,13 @@ module.exports = function nuxtTwa (options) {
     versionCode: Number(String(pckg.version).replace(/\./g, '')),
     versionName: pckg.version,
     iconPath: '/static/icon.png',
-    distFolder: rootDir + '.nuxt/dist/client',
+    distFolder: rootDir + '/.nuxt/dist/client',
     androidFolder: rootDir + '/android',
     statusBarColor: options.statusBarColor || '#fff'
   }
-  
+
   this.nuxt.hook('build:before', async () => {
-  
+
     options = {
       ...defaultOptions,
       ...options,
@@ -36,12 +36,12 @@ module.exports = function nuxtTwa (options) {
 
     let tempDir
     let tmpRes
-    
+
     try {
       tmpRes = await tmp.dir()
       tempDir = tmpRes.path + '/android'
     } catch (err) {
-      throw('Temperary directory generation failed:', err)
+      throw ('Temperary directory generation failed:', err)
     }
 
     try {
@@ -63,7 +63,7 @@ module.exports = function nuxtTwa (options) {
       await generateIcons(iconPath, androidIconsPath)
     } catch (err) {
       return consola.error('Generating icons failed', err)
-    }  
+    }
 
     try {
       await asyncNcp(tempDir, options.androidFolder)
