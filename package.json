@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/voorhoede-labs/nuxt-twa-module.git"
+    "url": "git+https://github.com/voorhoede/nuxt-twa-module.git"
   },
   "author": "Sjoerd Beentjes <sjoerd@voorhoede.nl> (https://sjoerdbeentjes)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/voorhoede-labs/nuxt-twa-module/issues"
+    "url": "https://github.com/voorhoede/nuxt-twa-module/issues"
   },
-  "homepage": "https://github.com/voorhoede-labs/nuxt-twa-module#readme",
+  "homepage": "https://github.com/voorhoede/nuxt-twa-module#readme",
   "dependencies": {
     "@babel/preset-env": "^7.3.1",
     "jimp": "^0.9.3",
