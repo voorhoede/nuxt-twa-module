@@ -36,7 +36,7 @@
     "get-port": "^5.1.1",
     "nuxt-edge": "^2.5.0-25842247.c8e17a77",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
+    "request-promise-native": "^1.0.8"
   },
   "jest": {
     "testEnvironment": "node",
