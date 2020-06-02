@@ -1,6 +1,6 @@
 # Nuxt TWA module
 
-[![npm style guide](https://img.shields.io/npm/v/nuxt-twa-module.svg?style=flat)](https://github.com/voorhoede-labs/nuxt-twa-module) [![Nuxt TWA module](https://img.shields.io/codecov/c/github/voorhoede/nuxt-twa-module.svg?style=flat)](https://codecov.io/gh/voorhoede/nuxt-twa-module) [![Nuxt TWA module](https://img.shields.io/circleci/project/github/voorhoede/nuxt-twa-module/master.svg?style=flat)](https://circleci.com/gh/voorhoede/nuxt-twa-module) [![Greenkeeper badge](https://badges.greenkeeper.io/voorhoede/nuxt-twa-module.svg)](https://greenkeeper.io/)
+[![npm style guide](https://img.shields.io/npm/v/nuxt-twa-module.svg?style=flat)](https://github.com/voorhoede-labs/nuxt-twa-module) [![Nuxt TWA module](https://img.shields.io/codecov/c/github/voorhoede/nuxt-twa-module.svg?style=flat)](https://codecov.io/gh/voorhoede/nuxt-twa-module) [![Nuxt TWA module](https://img.shields.io/circleci/project/github/voorhoede/nuxt-twa-module/master.svg?style=flat)](https://circleci.com/gh/voorhoede/nuxt-twa-module) [![Depfu Status][depfu-icon]][depfu]
 
 **Nuxt module to transform your PWA into an Android app, using Trusted Web Activities (TWA)**
 
@@ -106,3 +106,6 @@ adb shell "echo '_ --disable-digital-asset-link-verification-for-url=\"<your URL
 ## Licence
 
 [MIT](LICENSE)
+
+[depfu]: https://depfu.com/repos/github/voorhoede/nuxt-twa-module/
+[depfu-icon]: https://img.shields.io/depfu/voorhoede/nuxt-twa-module?style=flat-square
