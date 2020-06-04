@@ -24,7 +24,7 @@
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "handlebars": "^4.1.0",
-    "consola": "^2.4.1",
+    "consola": "^2.12.2",
     "rimraf": "^3.0.2",
     "tmp-promise": "^2.0.2"
   },
