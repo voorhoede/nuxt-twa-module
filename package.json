@@ -29,7 +29,7 @@
     "tmp-promise": "^2.0.2"
   },
   "devDependencies": {
-    "jest": "^24.1.0",
+    "jest": "^27.3.1",
     "@babel/core": "^7.3.3",
     "codecov": "^3.2.0",
     "eslint": "^6.8.0",
