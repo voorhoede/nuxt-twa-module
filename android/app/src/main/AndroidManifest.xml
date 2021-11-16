@@ -33,13 +33,13 @@
             android:name="asset_statements"
             android:value="${assetStatements}" />
 
-        <activity android:name="android.support.customtabs.trusted.LauncherActivity"
+        <activity android:name="com.google.androidbrowserhelper.trusted.LauncherActivity"
             android:label="${launcherName}">
-            <meta-data android:name="android.support.customtabs.trusted.DEFAULT_URL"
+            <meta-data android:name="com.google.androidbrowserhelper.trusted.DEFAULT_URL"
                 android:value="${defaultUrl}" />
 
             <meta-data
-                android:name="android.support.customtabs.trusted.STATUS_BAR_COLOR"
+                android:name="com.google.androidbrowserhelper.trusted.STATUS_BAR_COLOR"
                 android:resource="@color/colorPrimary" />
 
             <intent-filter>
