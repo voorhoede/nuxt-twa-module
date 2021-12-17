@@ -20,6 +20,7 @@
      application, the package attribute will need to reflect the correct path in order to use
      the abbreviated format. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.placeholder">
 
     <application
@@ -27,13 +28,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="${launcherName}"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TwaSplash">
+        android:theme="@style/Theme.TwaSplash"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data
             android:name="asset_statements"
             android:value="${assetStatements}" />
 
-        <activity android:name="android.support.customtabs.trusted.LauncherActivity"
+        <activity android:name="com.google.androidbrowserhelper.trusted.LauncherActivity"
             android:label="${launcherName}">
             <meta-data android:name="android.support.customtabs.trusted.DEFAULT_URL"
                 android:value="${defaultUrl}" />
